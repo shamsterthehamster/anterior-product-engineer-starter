@@ -22,14 +22,19 @@ export default function MedicalRecordUpload() {
             <button
                 className={classNames(
                     "text-white font-medium py-2 px-4 rounded border border-2",
-                    medicalRecord === null ? "bg-blue-500 border-blue-500" : "border-transparent text-green-600" 
+                    isLoading 
+                        ? "bg-transparent border-transparent" 
+                        : (medicalRecord === null 
+                            ? "bg-blue-500 border-blue-500" 
+                            : "border-transparent text-green-600" 
+                        )
                 )}
                 onClick={handleClick}
                 disabled={isLoading}
             >
                 {isLoading ? (
                     <>
-                        <FaSpinner className="animate-spin h-5 w-5" />
+                        <FaSpinner className="animate-spin h-7 w-7 text-gray-500" />
                     </>
                 ) : medicalRecord === null ? (
                     <span>Simulate Medical Record Upload</span>

@@ -22,14 +22,19 @@ export default function GuidelinesUpload() {
             <button
                 className={classNames(
                     "text-white font-medium py-2 px-4 rounded border border-2",
-                    guidelinesFile === null ? "bg-orange-500 border-orange-500" : "border-transparent text-green-600" 
+                    isLoading
+                        ? "bg-transparent border-transparent"
+                        : (guidelinesFile === null
+                            ? "bg-orange-500 border-orange-500"
+                            : "border-transparent text-green-600"
+                        )
                 )}
                 onClick={handleClick}
                 disabled={isLoading}
             >
                 {isLoading ? (
                     <>
-                        <FaSpinner className="animate-spin h-5 w-5" />
+                        <FaSpinner className="animate-spin h-7 w-7 text-gray-500" />
                     </>
                 ) : guidelinesFile === null ? (
                     <span>Simulate Guidelines Upload</span>
