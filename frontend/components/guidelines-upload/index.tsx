@@ -2,13 +2,19 @@
 
 import { useDashboard} from "@/context/dashboard-context";
 import classNames from "classnames";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck, FaSpinner } from "react-icons/fa";
+import { useState } from "react";
 
 export default function GuidelinesUpload() {
+    const [isLoading, setIsLoading] = useState(false);
     const { guidelinesFile, setGuidelinesFile } = useDashboard();
 
     const handleClick = () => {
-        setGuidelinesFile({ url: "/assets/guidelines.pdf" });
+        setIsLoading(true);
+        setTimeout(() => {
+            setIsLoading(false);
+            setGuidelinesFile({ url: "/assets/guidelines.pdf" });
+        }, 3000);
     }
 
     return(
@@ -19,9 +25,15 @@ export default function GuidelinesUpload() {
                     guidelinesFile === null ? "bg-orange-500 border-orange-500" : "border-transparent text-green-600" 
                 )}
                 onClick={handleClick}
+                disabled={isLoading}
             >
-                {guidelinesFile === null && (<span>Simulate Guidelines Upload</span>)}
-                {guidelinesFile !== null && (
+                {isLoading ? (
+                    <>
+                        <FaSpinner className="animate-spin h-5 w-5" />
+                    </>
+                ) : guidelinesFile === null ? (
+                    <span>Simulate Guidelines Upload</span>
+                ) : (
                     <span className="text-green-600 flex flex-row gap-1 items-center">
                         <FaCheck />
                         <span>Guidelines File Uploaded</span>

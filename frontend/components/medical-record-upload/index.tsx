@@ -2,13 +2,19 @@
 
 import { useDashboard } from "@/context/dashboard-context";
 import classNames from "classnames";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck, FaSpinner } from "react-icons/fa";
+import { useState } from "react";
 
 export default function MedicalRecordUpload() {
+    const [isLoading, setIsLoading] = useState(false);
     const { medicalRecord, setMedicalRecord } = useDashboard();
 
     const handleClick = () => {
-        setMedicalRecord({ url: "/assets/medical-record.pdf" });
+        setIsLoading(true);
+        setTimeout(() => {
+            setIsLoading(false);
+            setMedicalRecord({ url: "/assets/medical-record.pdf" });
+        }, 3000);
     }
 
     return(
@@ -19,9 +25,15 @@ export default function MedicalRecordUpload() {
                     medicalRecord === null ? "bg-blue-500 border-blue-500" : "border-transparent text-green-600" 
                 )}
                 onClick={handleClick}
+                disabled={isLoading}
             >
-                {medicalRecord === null && (<span>Simulate Medical Record Upload</span>)}
-                {medicalRecord !== null && (
+                {isLoading ? (
+                    <>
+                        <FaSpinner className="animate-spin h-5 w-5" />
+                    </>
+                ) : medicalRecord === null ? (
+                    <span>Simulate Medical Record Upload</span>
+                ) : (
                     <span className="text-green-600 flex flex-row gap-1 items-center">
                         <FaCheck />
                         <span>Medical Record Uploaded</span>
