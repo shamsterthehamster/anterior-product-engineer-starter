@@ -1,1 +1,7 @@
-Please request instructions on how to complete this take-home assignment from [zahid@anterior.com](mailto:zahid@anterior.com)
+## How to run locally
+
+### Install dependencies and launch app
+```
+# Run setup.sh
+chmod +x setup.sh && ./setup.sh
+```
