@@ -4,16 +4,23 @@ import { useDashboard} from "@/context/dashboard-context";
 import classNames from "classnames";
 import { FaCheck, FaSpinner } from "react-icons/fa";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function GuidelinesUpload() {
     const [isLoading, setIsLoading] = useState(false);
-    const { guidelinesFile, setGuidelinesFile } = useDashboard();
+    const { medicalRecord, guidelinesFile, setGuidelinesFile } = useDashboard();
 
     const handleClick = () => {
+        if (!medicalRecord) {
+            toast.warning("Please upload a medical record first");
+            return;
+        }
+
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
             setGuidelinesFile({ url: "/assets/guidelines.pdf" });
+            toast.success("Guidelines file uploaded");
         }, 3000);
     }
 
@@ -24,6 +31,8 @@ export default function GuidelinesUpload() {
                     "text-white font-medium py-2 px-4 rounded border border-2",
                     isLoading
                         ? "bg-transparent border-transparent"
+                        : medicalRecord === null
+                        ? "bg-gray-400 border-gray-400"
                         : (guidelinesFile === null
                             ? "bg-orange-500 border-orange-500"
                             : "border-transparent text-green-600"

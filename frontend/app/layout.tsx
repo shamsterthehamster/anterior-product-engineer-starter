@@ -1,4 +1,6 @@
 import "@/styles/globals.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IRootLayoutProps {
 	children: React.ReactNode;
@@ -12,6 +14,7 @@ export default function RootLayout(props: IRootLayoutProps) {
 			<head></head>
 			<body>
 				{children}
+				<ToastContainer/>
 				<div id="modal" />
 			</body>
 		</html>
