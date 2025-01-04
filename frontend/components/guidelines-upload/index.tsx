@@ -20,7 +20,6 @@ export default function GuidelinesUpload() {
         setTimeout(() => {
             setIsLoading(false);
             setGuidelinesFile({ url: "/assets/guidelines.pdf" });
-            toast.success("Guidelines file uploaded");
         }, 3000);
     }
 

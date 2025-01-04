@@ -14,7 +14,10 @@ export default function RootLayout(props: IRootLayoutProps) {
 			<head></head>
 			<body>
 				{children}
-				<ToastContainer/>
+				<ToastContainer
+					hideProgressBar={true}
+					autoClose={2000}
+				/>
 				<div id="modal" />
 			</body>
 		</html>
