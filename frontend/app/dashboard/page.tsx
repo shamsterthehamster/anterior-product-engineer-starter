@@ -13,7 +13,19 @@ export default function DashboardRoot() {
 	const CASE_ID = "case_891a_6fbl_87d1_4326";
 
 	const handleContinue = async () => {
-		await router.push(`/dashboard/case/${CASE_ID}`);
+		try {
+			const response = await fetch("http://localhost:8000/cases", { 
+				method: "POST", headers: {"Content-Type": "application/json"} 
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to create case");
+			}
+			const data = await response.json();
+			await router.push(`/dashboard/case/${data.id}`);
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	return (
