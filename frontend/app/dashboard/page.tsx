@@ -11,10 +11,11 @@ export default function DashboardRoot() {
 	const router = useRouter();
 	const { medicalRecord, guidelinesFile } = useDashboard();
 	const CASE_ID = "case_891a_6fbl_87d1_4326";
+	const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 	const handleContinue = async () => {
 		try {
-			const response = await fetch("http://localhost:8000/cases", { 
+			const response = await fetch(`${API_BASE_URL}/cases`, { 
 				method: "POST", headers: {"Content-Type": "application/json"} 
 			});
 
