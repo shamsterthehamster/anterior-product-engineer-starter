@@ -1,4 +1,4 @@
-from fastapi import APIRouter, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, HTTPException
 import json
 from models.cases import CaseRecord
 from pathlib import Path
@@ -16,14 +16,14 @@ def _get_case_responses(status: str) -> dict:
         json_path = asset_path / "response-1.json"
     elif status == "processing":
         json_path = asset_path / "response-2.json"
-    elif status == "completed":
+    elif status == "complete":
         json_path = asset_path / "response-3.json"
     else:
         raise ValueError(f"Invalid status: {status}")
     
     with open(json_path, "r") as file:
         data = json.load(file)
-        sanitized_record = CaseRecord(**data).dict(exclude={"case_id", "created_at"})
+        sanitized_record = CaseRecord(**data).model_dump(exclude={"case_id", "created_at"})
         return sanitized_record
     
 
@@ -44,8 +44,8 @@ def simulate_case_processing(case_id: str):
         case = case.model_copy(update=case_response)
         cases_store[case_id] = case
         time.sleep(20)
-        case.status = "completed"
-    if case.status == "completed":
+        case.status = "complete"
+    if case.status == "complete":
         case_response = _get_case_responses(case.status)
         case = case.model_copy(update=case_response)
         cases_store[case_id] = case
@@ -63,9 +63,9 @@ def create_case(background_tasks: BackgroundTasks):
 @router.get("/{case_id}", response_model=CaseRecord)
 def get_case(case_id: str):
     """ Get case by id """
-    case = cases_store.get(case_id)
+    case = cases_store.get(case_id, None)
     if not case:
-        return {"error": "Case not found"}
+        raise HTTPException(status_code=404, detail="Case not found")
     return case
 
 

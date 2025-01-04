@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import classNames from "classnames";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import Link from "next/link";
 
 export default function CaseResult({ params }: { params: { case_id: string } }) {
 	const [caseData, setCaseData] = useState<any>(null);
@@ -37,8 +38,23 @@ export default function CaseResult({ params }: { params: { case_id: string } }) 
 	}, [params.case_id]);
 
 	if (loading) return <div>Loading...</div>;
-	if (error) return <div className="text-red-500">Error: {error}</div>;
+	if (error) return (
+		<div className="h-screen flex flex-col justify-center items-center">
+			{/* Error Box */}
+			<div className="w-full max-w-md p-6 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-md shadow-lg">
+				<h2 className="text-lg font-semibold">⚠️ Something went wrong</h2>
+				<p className="mt-2">{error}</p>
+			</div>
 
+			{/* navigate back to dashboard */}
+			<p className="mt-4">
+				<Link href="/dashboard" className="text-blue-600 font-semibold hover:underline">
+					Back to Dashboard
+				</Link>
+			</p>
+		</div>
+	);
+	
 	return (
         <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
             <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">Case Details</h1>
@@ -61,7 +77,7 @@ export default function CaseResult({ params }: { params: { case_id: string } }) 
                     <p className="text-gray-900">{caseData.case_id}</p>
                 </div>
 
-                {caseData.status === "completed" && (
+                {caseData.status === "complete" && (
                     <>
                         <div className="flex justify-between">
                             <p className="text-gray-700 font-bold">Procedure Name:</p>
@@ -109,7 +125,7 @@ export default function CaseResult({ params }: { params: { case_id: string } }) 
                     </>
                 )}
 
-                {caseData.status !== "completed" && (
+                {caseData.status !== "complete" && (
                     <p className="text-gray-500 italic text-center mt-4">
                         Processing... Please check back later.
                     </p>

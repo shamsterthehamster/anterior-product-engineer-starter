@@ -1,5 +1,5 @@
 from endpoints.cases import router as cases_router
-from fastapi import FastAPI, BackgroundTasks
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()

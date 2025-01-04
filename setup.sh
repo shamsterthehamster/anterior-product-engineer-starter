@@ -34,6 +34,6 @@ echo "Starting frontend server..."
 osascript -e "tell application \"Terminal\" to do script \"cd '$PROJECT_DIR/frontend' && npm run dev\""# cd frontend
 
 echo "Starting backend server..."
-osascript -e "tell application \"Terminal\" to do script \"cd '$PROJECT_DIR' && python3 -muvicorn backend.main:app --reload\""
+osascript -e "tell application \"Terminal\" to do script \"cd '$PROJECT_DIR/backend' && python3 -muvicorn main:app --reload\""
 
 echo "✅ All servers are running! Your development environment is ready."
