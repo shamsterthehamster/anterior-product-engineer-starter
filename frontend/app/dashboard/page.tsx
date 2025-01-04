@@ -11,9 +11,22 @@ export default function DashboardRoot() {
 	const router = useRouter();
 	const { medicalRecord, guidelinesFile } = useDashboard();
 	const CASE_ID = "case_891a_6fbl_87d1_4326";
+	const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 	const handleContinue = async () => {
-		await router.push(`/dashboard/case/${CASE_ID}`);
+		try {
+			const response = await fetch(`${API_BASE_URL}/cases`, { 
+				method: "POST", headers: {"Content-Type": "application/json"} 
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to create case");
+			}
+			const data = await response.json();
+			await router.push(`/dashboard/case/${data.id}`);
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	return (
