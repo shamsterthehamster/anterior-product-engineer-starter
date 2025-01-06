@@ -1,5 +1,9 @@
 #!/bin/bash
 PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+if [ -f .env.local ]; then
+    source .env.local
+    echo "✅ Environment variables loaded."
+fi
 
 # Install prerequisites
 echo "Setting up development environment..."
@@ -15,6 +19,7 @@ if ! command -v node &> /dev/null; then
     exit 1
 fi
 
+
 # Backend setup
 echo "Installing backend dependencies..."
 cd backend
@@ -27,6 +32,14 @@ cd frontend
 npm install
 cd ..
 
+# Ensure PostgreSQL database exists
+echo "📂 Checking database..."
+python3 database_creation_script.py
+
+# Apply Alembic migrations
+echo "🔄 Running database migrations..."
+alembic upgrade head
+
 echo "✅ Setup complete! Your development environment is ready."
 
 # Run frontend and backend servers
@@ -34,6 +47,6 @@ echo "Starting frontend server..."
 osascript -e "tell application \"Terminal\" to do script \"cd '$PROJECT_DIR/frontend' && npm run dev\""# cd frontend
 
 echo "Starting backend server..."
-osascript -e "tell application \"Terminal\" to do script \"cd '$PROJECT_DIR/backend' && python3 -muvicorn main:app --reload\""
+osascript -e "tell application \"Terminal\" to do script \"cd '$PROJECT_DIR/backend' && source '$PROJECT_DIR/.env.local' && python3 -muvicorn main:app --reload\""
 
 echo "✅ All servers are running! Your development environment is ready."
